@@ -1,37 +1,44 @@
-import { X } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore";
-import { useChatStore } from "../store/useChatStore";
 
-const ChatHeader = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+import { useAuthStore } from "../store/useAuthStore"; // If you need user info
+import { Link } from "react-router-dom";
+import { LogOut } from "lucide-react"; // Optional for logout button
+
+const TopBar = () => {
+  const { authUser } = useAuthStore(); // Assuming this gives you the logged-in user's data
 
   return (
-    <div className="p-2.5 border-b border-base-300">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {/* Avatar */}
-          <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
-            </div>
-          </div>
+    <header className="bg-primary text-white p-4 flex justify-between items-center shadow-md">
+      <div className="flex items-center gap-3">
+        <Link to="/" className="text-xl font-bold">
+          <span className="text-2xl">ChatApp</span> {/* Use your logo name or style here */}
+        </Link>
+        {/* You can add icons here or modify this based on login page design */}
+      </div>
 
-          {/* User info */}
-          <div>
-            <h3 className="font-medium">{selectedUser.fullName}</h3>
-            <p className="text-sm text-base-content/70">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
-            </p>
-          </div>
+      <div className="flex items-center gap-3">
+        {/* User profile */}
+        <div className="flex items-center gap-2">
+          <img
+            src={authUser?.profilePic || "/avatar.png"}
+            alt="User Avatar"
+            className="w-8 h-8 rounded-full border-2 border-white"
+          />
+          <span>{authUser?.name}</span>
         </div>
 
-        {/* Close button */}
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
+        {/* Optional: Logout Button */}
+        <button
+          onClick={() => {
+            // Handle logout logic here
+            console.log("Logged out!");
+          }}
+          className="btn btn-outline btn-sm text-white"
+        >
+          <LogOut size={20} />
         </button>
       </div>
-    </div>
+    </header>
   );
 };
-export default ChatHeader;
+
+export default TopBar;
