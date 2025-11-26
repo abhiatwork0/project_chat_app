@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    container_name: chatapp-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb+srv://abhiatwork0:pWLcBIl91vAhIPLd@cluster0.qsoedq0.mongodb.net/chat_Application?retryWrites=true&w=majority&appName=Cluster0
+      - PORT=5001
+      - JWT_SECRET=myscretkey
+      - NODE_ENV=development
+      - CLOUDINARY_CLOUD_NAME=dcb9oxxq4
+      - CLOUDINARY_API_KEY=265859848215283
+      - CLOUDINARY_API_SECRET=B5RhFsQwvFBOwky2MqbUETfqPXM
+
+  frontend:
+    build: ./frontend
+    container_name: chatapp-frontend
+    ports:
+      - "3000:80"    # localhost:3000 -> nginx:80
+    environment:
+      - VITE_API_URL=http://localhost:5001
+    depends_on:
+      - backend
